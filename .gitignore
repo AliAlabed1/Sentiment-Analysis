@@ -3,3 +3,5 @@ mlartifacts/**/**
 mlruns/**/**
 Models/**/**
 Notebooks/mlruns/**
+logs/**
+__pycache__
