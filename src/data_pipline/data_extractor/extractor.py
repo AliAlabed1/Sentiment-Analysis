@@ -28,25 +28,17 @@ class LoadCSVFile():
         - OSError: If there is an issue loading the CSV file.  
         """
 
-        # Check if the csv file path exists
-        if not os.path.exists(path):
-            app_logger.error(f"The file does not exist: {path}")
-            raise FileNotFoundError(f"The specified CSV file path does not exist: {path}")
         try:
-            # Attempt to loead the csv file
+            if not os.path.exists(path):
+                app_logger.error(f"The file does not exist: {path}")
+                raise FileNotFoundError(f"The specified CSV file path does not exist: {path}")
+            
             df = pd.read_csv(path)
 
-            # Check if the csv file loaded is None
             if df is None:
-                app_logger.error("The df is None")
                 raise ValueError("The loaded df is None. Please check the CSV file.")
             app_logger.info(f"df loaded successfully from {path}")
             return df
-        except (OSError, IOError) as e:
-            # Handle file I/O errors
-            app_logger.error(f"Error loading CSV file: {path}. Exception: {str(e)}")
-            raise OSError(f"Error loading CSV file: {path}") from e
-        
         except Exception as e:
             # Catch any other exceptions that may occur
             app_logger.error(f"An unexpected error occurred while loading the CSV file: {str(e)}")

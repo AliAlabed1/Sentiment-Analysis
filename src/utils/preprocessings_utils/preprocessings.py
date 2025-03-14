@@ -8,13 +8,20 @@ import nltk
 from nltk import pos_tag
 from nltk.corpus import wordnet
 from nltk.stem import WordNetLemmatizer
-nltk.download('punkt_tab') 
-nltk.download('stopwords')
-nltk.download('wordnet')
-nltk.download('omw-1.4')
-nltk.download('averaged_perceptron_tagger_eng')
+# nltk.download('punkt_tab') 
+# nltk.download('stopwords')
+# nltk.download('wordnet')
+# nltk.download('omw-1.4')
+# nltk.download('averaged_perceptron_tagger_eng')
 
-class preprocessings:
+# Add the directory containing the `src` folder to the Python path
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.abspath(os.path.join(CURRENT_DIR, "../../"))  # Adjust to reach `src`
+sys.path.append(PROJECT_ROOT)
+
+from utils.logging_utils.app_logger import app_logger
+
+class preprocessor:
     '''
         This class contains all text preprocessing methods 
         feel free to add new ones by declaring a new function as follow:
@@ -23,7 +30,11 @@ class preprocessings:
             retunn text
     '''
 
-    def lowecasing(self,text):
+    methods_names = [
+        'lowercasing','check_mentions','remove_mentions','check_urls','remove_urls','check_hashtags','remove_hashtags','check_emoji','replace_emojis','remove_stopwords','remove_puncutations','lemmatize_sentence'
+    ]
+
+    def lowercasing(self,text):
         '''
             This function is to lowercase text
             params:
@@ -111,7 +122,7 @@ class preprocessings:
         '''
         return any(char in emoji.EMOJI_DATA for char in text)
     
-    def replace_emojis(text):
+    def replace_emojis(self,text):
         '''
             This function is to replace empjies with strings
             params:
@@ -178,5 +189,37 @@ class preprocessings:
         '''
         lemmatizer = WordNetLemmatizer()
         pos_tags = pos_tag(tokens)  # Part-of-speech tagging
-        lemmatized_words = [lemmatizer.lemmatize(word, get_wordnet_pos(tag)) for word, tag in pos_tags]
+        lemmatized_words = [lemmatizer.lemmatize(word, self.get_wordnet_pos(tag)) for word, tag in pos_tags]
         return ' '.join(lemmatized_words)
+    
+    def apply_method(self,method_name,input):
+        '''
+            This function is the call for preprocessing class 
+            params:
+                method_name: string
+                input:str(text) or list[string](tokens)
+            return:
+                result: string
+        '''
+
+        try:
+            if not isinstance(method_name,str):
+                raise TypeError('Method name is not a string type')
+            if input == None:
+                raise TypeError("Input for cleaning method is None")
+            
+            method = getattr(self, method_name, None)
+            if callable(method):
+                result = method(input)
+                return result
+            else:
+                raise Exception(f"Method '{method_name}' not found!")
+        except Exception as e:
+            app_logger.error(f"Exeption: {e}")
+
+
+
+if __name__ == '__main__':
+    ipreprocessor = preprocessor()
+    result = ipreprocessor.apply_method("lowercasing",'THIS IS TEST')
+    print(result)
