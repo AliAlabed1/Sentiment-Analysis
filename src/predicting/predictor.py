@@ -39,9 +39,8 @@ class Predict:
         pipeline = data_pipeline()
         df,vector = pipeline.apply('temp.csv', 'predict')
         app_logger.info('Finish data pipeline!')
-        print(df)
         prediction = model.predict(vector)
-        print(prediction)
+        return prediction[0]
 
 if __name__ == '__main__':
     model = joblib.load(f'{worksapce}/Models/logistic_model.pkl')

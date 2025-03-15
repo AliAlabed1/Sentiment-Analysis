@@ -14,7 +14,8 @@ from utils.evaluation_utils.evaluations import Evaluate
 from utils.logging_utils.app_logger import app_logger
 from training.trainer import train
 from data_pipline.pipeline import data_pipeline
-from mlflow.runner import MlFlow_Runner
+from MLflow.runner import MlFlow_Runner
+from api.run_server import server
 class Main:
     def choice_0(self):
         models = ['VADER','Logistic','Random','XGB']
@@ -49,11 +50,12 @@ class Main:
         results_df.to_csv(f"{worksapce}/Data/evaluation_results.csv", index=False)
     
     def choice_1(self):
-        pass
-
-    def choice_2(self):
         runner = MlFlow_Runner()
         mlprocess = runner.run()
+
+    def choice_2(self):
+        serve = server()
+        serve.run()
 
     def run_choice(self,choice):
         mthod = getattr(self,f'choice_{choice}',None)
@@ -77,15 +79,15 @@ if __name__ == '__main__':
 
         if choice == choices[0]:
             main.run_choice(0)
-        elif choice == [2]:
-            mlprocess = main.run_choice(2)
+        elif choice == choices[1]:
+            mlprocess = main.choice_1()
             c = ''
             while c != 'y':
                 c = input("Enter y to kill the mlflow ui running process")
             mlprocess.terminate()
+        elif choice == choices[2]:
+            main.choice_2()
             
-            
-
     except Exception as e:
         app_logger.error(f"Exception: {e}")
 
