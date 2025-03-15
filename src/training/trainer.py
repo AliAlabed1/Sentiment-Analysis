@@ -34,7 +34,7 @@ class train:
         app_logger.info('Training VADER model....')
         predictions = df['cleaned_text'].apply(self.get_vader_sentiment)
         app_logger.info('Training Done!')
-        return predictions
+        return predictions,None
     
     def train_Logistic(self,X_train,y_train,X_test):
         '''
@@ -57,7 +57,7 @@ class train:
         joblib.dump(model,model_path)
         predictions = model.predict(X_test)
         app_logger.info('Training Done!')
-        return predictions
+        return predictions,model_path
     
     def train_Random(self,X_train,y_train,X_test):
         '''
@@ -80,7 +80,7 @@ class train:
         joblib.dump(model,model_path)
         predictions = model.predict(X_test)
         app_logger.info('Training Done!')
-        return predictions
+        return predictions,model_path
     
     def train_XGB(self,X_train,y_train,X_test):
         '''
@@ -104,7 +104,7 @@ class train:
         model.save_model(model_path)
         predictions =model.predict(X_test)
         app_logger.info('Training Done!')
-        return predictions
+        return predictions,model_path
     
     def train_model(self,model_name,df,X_train,y_train,X_test):
         if not isinstance(model_name,str):
@@ -112,10 +112,10 @@ class train:
         method = getattr(self,f'train_{model_name}',None)
         if callable(method):
             if model_name == 'VADER':
-                prediction = method(df)
+                prediction,model_path = method(df)
             else:
-                prediction = method(X_train,y_train,X_test)
-            return prediction
+                prediction,model_path = method(X_train,y_train,X_test)
+            return prediction,model_path
         else:
             raise Exception(f"Model '{model_name}' training process isn't defined please defint it then try again!")
         
@@ -125,6 +125,6 @@ if __name__ == '__main__':
     X_test = joblib.load(f'{worksapce}/Data/Vectorized/X_test_tfidf.pkl')
     y_train = joblib.load(f'{worksapce}/Data/Vectorized/y_train.pkl')
     y_test = joblib.load(f'{worksapce}/Data/Vectorized/y_test.pkl')
-    predictions = trainer.train_model('Logistic',X_train,y_train,X_test)
+    predictions,_= trainer.train_model('Logistic',X_train,y_train,X_test)
 
 

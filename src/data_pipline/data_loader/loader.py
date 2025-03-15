@@ -24,7 +24,6 @@ class Load:
         desired_columns = ['cleaned_text','cleaned_tokens','sentiment']
         df = df[desired_columns]
         df['label'] = df['sentiment'].map({'POSITIVE': 1, 'NEGATIVE': 0})
-        print(df.isnull().sum())
         df.to_csv(f'{worksapce}/Data/Cleaned dataset/cleaned_news.csv',index=False)
         app_logger.info("Save cleaned data is done successfully!")
         return df

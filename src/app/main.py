@@ -2,6 +2,7 @@ import os
 import sys
 import joblib
 import pandas as pd
+import questionary
 # Add the directory containing the `src` folder to the Python path
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.abspath(os.path.join(CURRENT_DIR, "../"))  # Adjust to reach `src`
@@ -13,14 +14,12 @@ from utils.evaluation_utils.evaluations import Evaluate
 from utils.logging_utils.app_logger import app_logger
 from training.trainer import train
 from data_pipline.pipeline import data_pipeline
-
-
-if __name__ == '__main__':
-    try:
-
+from mlflow.runner import MlFlow_Runner
+class Main:
+    def choice_0(self):
         models = ['VADER','Logistic','Random','XGB']
         pipeline = data_pipeline()
-        pipeline.apply(f'{worksapce}/Data/Source_dataset/news.csv')
+        pipeline.apply(f'{worksapce}/Data/Source_dataset/news.csv','train')
         df = pd.read_csv(f'{worksapce}/Data/Cleaned dataset/cleaned_news.csv')
         df = df.dropna()
         trainer = train()
@@ -48,6 +47,43 @@ if __name__ == '__main__':
             # Append the new row using `pd.concat()`
             results_df = pd.concat([results_df, new_row], ignore_index=True)
         results_df.to_csv(f"{worksapce}/Data/evaluation_results.csv", index=False)
+    
+    def choice_1(self):
+        pass
+
+    def choice_2(self):
+        runner = MlFlow_Runner()
+        mlprocess = runner.run()
+
+    def run_choice(self,choice):
+        mthod = getattr(self,f'choice_{choice}',None)
+        if callable(mthod):
+            mthod()
+        else:
+            raise Exception("Unexpected exeption accured!!")
+
+if __name__ == '__main__':
+    try:
+        print('\n               ****************Sentiment Analysis********************\
+              \n                        You can choose on of following choices:'
+            )
+        choices = ["Run the data pipline and train models from scratch","Run MLflow Runner","Run the app to predict"]
+        choice = questionary.select(
+            "Choose the process:",
+            choices=choices,
+            use_arrow_keys=True
+        ).ask()
+        main = Main()
+
+        if choice == choices[0]:
+            main.run_choice(0)
+        elif choice == [2]:
+            mlprocess = main.run_choice(2)
+            c = ''
+            while c != 'y':
+                c = input("Enter y to kill the mlflow ui running process")
+            mlprocess.terminate()
+            
             
 
     except Exception as e:
