@@ -20,7 +20,7 @@ if __name__ == '__main__':
 
         models = ['VADER','Logistic','Random','XGB']
         pipeline = data_pipeline()
-        # pipeline.apply(f'{worksapce}/Data/Source_dataset/news.csv')
+        pipeline.apply(f'{worksapce}/Data/Source_dataset/news.csv')
         df = pd.read_csv(f'{worksapce}/Data/Cleaned dataset/cleaned_news.csv')
         df = df.dropna()
         trainer = train()

@@ -8,11 +8,11 @@ import nltk
 from nltk import pos_tag
 from nltk.corpus import wordnet
 from nltk.stem import WordNetLemmatizer
-# nltk.download('punkt_tab') 
-# nltk.download('stopwords')
-# nltk.download('wordnet')
-# nltk.download('omw-1.4')
-# nltk.download('averaged_perceptron_tagger_eng')
+nltk.download('punkt_tab') 
+nltk.download('stopwords')
+nltk.download('wordnet')
+nltk.download('omw-1.4')
+nltk.download('averaged_perceptron_tagger_eng')
 
 # Add the directory containing the `src` folder to the Python path
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))

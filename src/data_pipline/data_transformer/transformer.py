@@ -131,12 +131,12 @@ class transform:
         
 
 
-        # # limmatize the text
-        # app_logger.info("Lemmatizing the text...")
-        # app_logger.info("Retokenize the text after removing stopwords...")
-        # df['cleaned_tokens'] = df['cleaned_text'].apply(self.simple_tokenize)
-        # df['cleaned_text'] = df['cleaned_tokens'].apply(lambda x: ipreprocessor.apply_method('lemmatize_sentence',x))
-        # app_logger.info("Lemmatize text applied successfully!")
+        # limmatize the text
+        app_logger.info("Lemmatizing the text...")
+        app_logger.info("Retokenize the text after removing stopwords...")
+        df['cleaned_tokens'] = df['cleaned_text'].apply(self.simple_tokenize)
+        df['cleaned_text'] = df['cleaned_tokens'].apply(lambda x: ipreprocessor.apply_method('lemmatize_sentence',x))
+        app_logger.info("Lemmatize text applied successfully!")
         return df
         
 
