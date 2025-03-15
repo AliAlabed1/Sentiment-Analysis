@@ -61,10 +61,11 @@ class MlFlow_Runner:
                     'precesion':precesion,
                     'f1-score':f1
                 })
-        app_logger.info("Training complete. MLflow UI is running at http://127.0.0.1:5000")
-
-        # Optional: Keep script running so MLflow UI stays alive
+        app_logger.info("Training complete. MLflow UI is running at http://127.0.0.1:5000 press ctrl+c to end the mlflow ui process")
         mlflow_process.wait()
+        
+        
+        
         return mlflow_process
 
 if __name__ == '__main__':

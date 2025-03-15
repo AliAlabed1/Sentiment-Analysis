@@ -51,7 +51,7 @@ class Main:
     
     def choice_1(self):
         runner = MlFlow_Runner()
-        mlprocess = runner.run()
+        runner.run()
 
     def choice_2(self):
         serve = server()
@@ -80,11 +80,8 @@ if __name__ == '__main__':
         if choice == choices[0]:
             main.run_choice(0)
         elif choice == choices[1]:
-            mlprocess = main.choice_1()
-            c = ''
-            while c != 'y':
-                c = input("Enter y to kill the mlflow ui running process")
-            mlprocess.terminate()
+            main.choice_1()
+            
         elif choice == choices[2]:
             main.choice_2()
             
