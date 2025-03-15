@@ -1,0 +1,9 @@
+ntlk
+pandas
+numpy
+joblib 
+sklearn
+xgboost
+tqdm
+mlflow
+vaderSentiment
