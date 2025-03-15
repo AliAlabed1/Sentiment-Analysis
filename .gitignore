@@ -1,7 +1,8 @@
-Data/**/** 
 mlartifacts/**/**
 mlruns/**/**
-Models/**/**
 Notebooks/mlruns/**
 logs/**
 __pycache__
+/Data
+/Models
+dvc.json 
