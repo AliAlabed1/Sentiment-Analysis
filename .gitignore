@@ -6,3 +6,5 @@ __pycache__
 /Data
 /Models
 dvc.json 
+venv
+src/app/mlruns/**

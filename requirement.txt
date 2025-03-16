@@ -1,9 +1,11 @@
-ntlk
+nltk
 pandas
 numpy
 joblib 
-sklearn
+scikit-learn
 xgboost
 tqdm
 mlflow
 vaderSentiment
+questionary
+emoji
